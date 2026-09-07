@@ -6,8 +6,8 @@
 - **Category:** Planned platform control plane — marketing
 - **Visibility:** `public`
 - **Default branch:** `main`
-- **Authority:** Proposed marketing coordination authority; not yet implemented or accepted as runtime authority
-- **Status:** Empty repository initialized with an architecture outline only.
+- **Authority:** Protected marketing coordination source; production runtime authority remains unverified
+- **Status:** Control-plane source and tests exist. No repository-owned production deployment, immutable release, rollback target, or live safety read-back is certified.
 
 ## Intended purpose
 
