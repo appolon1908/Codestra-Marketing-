@@ -48,7 +48,9 @@ async def main() -> None:
     conn = await asyncpg.connect(dsn())
     try:
         # Disposable certification database ONLY; never run against production.
-        await execute_files(conn, DOWN)
+        if await conn.fetchval("SELECT to_regclass('public.campaigns')") is not None:
+            await execute_files(conn, DOWN)
+        await assert_absent(conn)
         await execute_files(conn, UP)
         await assert_present(conn)
         await execute_files(conn, DOWN)

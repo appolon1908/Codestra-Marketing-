@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "accounts": [
+    {
+      "tenant_id": "example-tenant",
+      "alias": "sandbox-example",
+      "provider": "sandbox",
+      "provider_account_id": "123",
+      "mode": "sandbox",
+      "currency": "USD",
+      "max_daily_budget_minor": 1000,
+      "max_total_budget_minor": 10000,
+      "max_duration_days": 7,
+      "max_start_delay_days": 30,
+      "audiences": ["00000000-0000-4000-8000-000000000002"],
+      "creatives": ["00000000-0000-4000-8000-000000000003"],
+      "countries": ["DO"],
+      "minimum_age": 21,
+      "objectives": ["OUTCOME_LEADS"]
+    }
+  ]
+}
