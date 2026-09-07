@@ -32,6 +32,12 @@ class Claim:
 
 
 def capability_enabled() -> bool:
+    # The canonical kill switch takes precedence over the historical alias.
+    # An omitted canonical setting preserves legacy test/development behavior;
+    # the production image explicitly sets both settings to false.
+    canonical = os.getenv("LIVE_ADVERTISING")
+    if canonical is not None and canonical.strip().lower() != "true":
+        return False
     return os.getenv("LIVE_ADVERTISING_ENABLED", "false").strip().lower() == "true"
 
 

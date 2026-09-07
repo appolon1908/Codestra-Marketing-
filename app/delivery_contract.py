@@ -10,6 +10,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from .identifiers import TENANT_PATTERN
 
 ACTIVATION_PATH = "/api/v1/control/marketing/campaign-activations"
 TRANSITION_PATH = "/api/v1/control/marketing/campaign-transitions"
@@ -41,7 +42,7 @@ class MarketingCommand(BaseModel):
     action: Literal["activate", "pause", "resume"]
     expected_state: Literal["approved", "paused"]
     expected_version: int = Field(strict=True, ge=1, le=2147483647)
-    tenant_id: str = Field(strict=True, min_length=1, max_length=64, pattern=r"^[A-Za-z0-9][A-Za-z0-9._:-]*$")
+    tenant_id: str = Field(strict=True, min_length=1, max_length=64, pattern=TENANT_PATTERN)
     correlation_id: str = Field(strict=True, min_length=8, max_length=128, pattern=r"^[A-Za-z0-9][A-Za-z0-9._:-]*$")
 
     @model_validator(mode="after")

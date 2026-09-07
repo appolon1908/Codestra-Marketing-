@@ -8,25 +8,13 @@ from pathlib import Path
 import asyncpg
 
 ROOT = Path(__file__).resolve().parents[1]
-UP = [
-    ROOT / "migrations/001_stage4.sql",
-    ROOT / "migrations/002_stage5.sql",
-    ROOT / "migrations/003_operations.sql",
-]
-DOWN = [
-    ROOT / "migrations/003_operations.down.sql",
-    ROOT / "migrations/002_stage5.down.sql",
-    ROOT / "migrations/001_stage4.down.sql",
-]
+REVISIONS = ("001_stage4", "002_stage5", "003_operations", "004_provider_boundary")
+UP = [ROOT / f"migrations/{revision}.sql" for revision in REVISIONS]
+DOWN = [ROOT / f"migrations/{revision}.down.sql" for revision in reversed(REVISIONS)]
 TABLES = (
-    "campaigns",
-    "campaign_approvals",
-    "audiences",
-    "creatives",
-    "marketing_operations",
-    "marketing_outbox",
-    "marketing_audit_events",
-    "marketing_attribution_touches",
+    "campaigns", "campaign_approvals", "audiences", "creatives",
+    "marketing_operations", "marketing_outbox", "marketing_audit_events",
+    "marketing_attribution_touches", "marketing_provider_campaigns", "marketing_provider_commands",
 )
 
 
@@ -43,12 +31,10 @@ async def execute_files(conn: asyncpg.Connection, paths: list[Path]) -> None:
 async def assert_present(conn: asyncpg.Connection) -> None:
     for table in TABLES:
         assert await conn.fetchval("SELECT to_regclass($1)", f"public.{table}") == table
-    assert await conn.fetchval(
-        "SELECT count(*) FROM pg_indexes WHERE schemaname='public' AND indexname='uq_campaign_idempotency'"
-    ) == 1
-    assert await conn.fetchval(
-        "SELECT count(*) FROM pg_indexes WHERE schemaname='public' AND indexname='uq_marketing_operation_idempotency'"
-    ) == 1
+    for index in ("uq_campaign_idempotency", "uq_marketing_operation_idempotency", "uq_provider_command_key"):
+        assert await conn.fetchval(
+            "SELECT count(*) FROM pg_indexes WHERE schemaname='public' AND indexname=$1", index
+        ) == 1
 
 
 async def assert_absent(conn: asyncpg.Connection) -> None:
@@ -61,7 +47,8 @@ async def main() -> None:
         raise SystemExit("POSTGRES_DSN or DATABASE_URL is required")
     conn = await asyncpg.connect(dsn())
     try:
-        await conn.execute((ROOT / "migrations/001_stage4.down.sql").read_text(encoding="utf-8"))
+        # Disposable certification database ONLY; never run against production.
+        await execute_files(conn, DOWN)
         await execute_files(conn, UP)
         await assert_present(conn)
         await execute_files(conn, DOWN)

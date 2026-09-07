@@ -15,7 +15,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     CODESTRA_GIT_SHA=${SOURCE_SHA} \
     CODESTRA_RELEASE_ID=${RELEASE_VERSION} \
     CODESTRA_BUILD_TIMESTAMP=${BUILD_TIME} \
-    CODESTRA_MIGRATION_REVISION=003_operations
+    CODESTRA_MIGRATION_REVISION=004_provider_boundary \
+    LIVE_ADVERTISING=false \
+    LIVE_ADVERTISING_ENABLED=false \
+    MARKETING_DRAFT_PROVIDER_WRITES_ENABLED=false
 
 WORKDIR /app
 COPY pyproject.toml uv.lock requirements.lock ./
@@ -31,4 +34,4 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD wget -q -O /dev/null http://127.0.0.1:8080/health/live || exit 1
 ENTRYPOINT ["python", "-m", "uvicorn"]
-CMD ["app.main:app", "--host", "0.0.0.0", "--port", "8080", "--no-access-log"]
+CMD ["app.asgi:app", "--host", "0.0.0.0", "--port", "8080", "--no-access-log"]
