@@ -22,6 +22,7 @@ jobs:
       - run: pip install -e '.[test]'
       - run: python -m compileall -q app scripts tests
       - run: pytest -q -m 'not postgres'
+      - run: python scripts/validate_api_contract.py
       - run: python -c "from app.main import app, LIVE_ADVERTISING_ENABLED, META_READ_SYNC_ENABLED; assert app; assert LIVE_ADVERTISING_ENABLED is False; assert META_READ_SYNC_ENABLED is False"
       - run: python -c "from app.providers.meta import MetaAdsConnector; assert MetaAdsConnector.live_writes_enabled is False"
 

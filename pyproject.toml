@@ -7,7 +7,7 @@ name = "codestra-marketing"
 version = "0.3.0"
 description = "Codestra paid acquisition and marketing control plane"
 requires-python = ">=3.12"
-dependencies = ["fastapi>=0.116,<1", "uvicorn[standard]>=0.35,<1", "pydantic>=2.11,<3", "sqlalchemy[asyncio]>=2.0,<3", "asyncpg>=0.30,<1", "httpx>=0.28,<1"]
+dependencies = ["fastapi>=0.116,<1", "uvicorn[standard]>=0.35,<1", "pydantic>=2.11,<3", "sqlalchemy[asyncio]>=2.0,<3", "asyncpg>=0.30,<1", "httpx>=0.28,<1", "PyJWT[crypto]>=2.10,<3", "prometheus-client>=0.22,<1"]
 
 [project.optional-dependencies]
 test = ["pytest>=8,<9", "pytest-asyncio>=0.24,<1"]

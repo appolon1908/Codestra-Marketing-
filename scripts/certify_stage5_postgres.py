@@ -8,9 +8,26 @@ from pathlib import Path
 import asyncpg
 
 ROOT = Path(__file__).resolve().parents[1]
-UP = [ROOT / "migrations/001_stage4.sql", ROOT / "migrations/002_stage5.sql"]
-DOWN = [ROOT / "migrations/002_stage5.down.sql", ROOT / "migrations/001_stage4.down.sql"]
-TABLES = ("campaigns", "campaign_approvals", "audiences", "creatives")
+UP = [
+    ROOT / "migrations/001_stage4.sql",
+    ROOT / "migrations/002_stage5.sql",
+    ROOT / "migrations/003_operations.sql",
+]
+DOWN = [
+    ROOT / "migrations/003_operations.down.sql",
+    ROOT / "migrations/002_stage5.down.sql",
+    ROOT / "migrations/001_stage4.down.sql",
+]
+TABLES = (
+    "campaigns",
+    "campaign_approvals",
+    "audiences",
+    "creatives",
+    "marketing_operations",
+    "marketing_outbox",
+    "marketing_audit_events",
+    "marketing_attribution_touches",
+)
 
 
 def dsn() -> str:
@@ -28,6 +45,9 @@ async def assert_present(conn: asyncpg.Connection) -> None:
         assert await conn.fetchval("SELECT to_regclass($1)", f"public.{table}") == table
     assert await conn.fetchval(
         "SELECT count(*) FROM pg_indexes WHERE schemaname='public' AND indexname='uq_campaign_idempotency'"
+    ) == 1
+    assert await conn.fetchval(
+        "SELECT count(*) FROM pg_indexes WHERE schemaname='public' AND indexname='uq_marketing_operation_idempotency'"
     ) == 1
 
 

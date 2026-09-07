@@ -1,0 +1,32 @@
+asyncapi: 3.0.0
+info:
+  title: Codestra Marketing Events
+  version: 1.0.0
+  description: Sanitized durable Marketing commands emitted only through Middleware.
+channels:
+  campaignCommands:
+    address: marketing.campaign.commands
+    messages:
+      campaignCommand:
+        $ref: '#/components/messages/CampaignCommand'
+operations:
+  receiveCampaignCommand:
+    action: receive
+    channel:
+      $ref: '#/channels/campaignCommands'
+components:
+  messages:
+    CampaignCommand:
+      name: CampaignCommand
+      payload:
+        type: object
+        additionalProperties: false
+        required: [operation_id, campaign_id, action, expected_state, expected_version, tenant_id, correlation_id]
+        properties:
+          operation_id: {type: string, format: uuid}
+          campaign_id: {type: string, format: uuid}
+          action: {type: string, enum: [activate, pause, resume]}
+          expected_state: {type: string, enum: [approved, paused]}
+          expected_version: {type: integer, minimum: 1}
+          tenant_id: {type: string, minLength: 1, maxLength: 64}
+          correlation_id: {type: string, minLength: 8, maxLength: 128}

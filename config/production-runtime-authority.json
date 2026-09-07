@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-01T18:05:43Z",
+  "repository": "appolon1908-hue/Codestra-Marketing-",
+  "protected_source_sha": "460ff98f64ef9f0724fe4d2afc51a1a6c5b053dd",
+  "public_hostname": "marketing.codestra.co",
+  "observed_ipv4": "49.12.145.107",
+  "runtime_location": "49.12.145.107",
+  "authority_status": "UNVERIFIED_OFF_HOST",
+  "deployment_authorized": false,
+  "production_writes_authorized": false,
+  "production_ready": false,
+  "source_capabilities": {
+    "live_advertising_default": false,
+    "meta_read_sync_default": false,
+    "provider_activation_implemented": false
+  },
+  "runtime_evidence": {
+    "dns_matches_observed_host": true,
+    "tls_valid": false,
+    "health_reachable": false,
+    "image_digest": "UNKNOWN",
+    "git_sha": "UNKNOWN",
+    "live_advertising_enabled": "UNKNOWN"
+  },
+  "required_gates": {
+    "runtime_owner_attested": false,
+    "tls_valid": false,
+    "health_reachable": false,
+    "immutable_image_digest_exposed": false,
+    "protected_git_sha_exposed": false,
+    "live_advertising_readback_false": false,
+    "gateway_path_verified": false,
+    "rollback_target_verified": false
+  }
+}
