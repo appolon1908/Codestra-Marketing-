@@ -1,0 +1,97 @@
+{
+  "$defs": {
+    "DraftSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "account": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9_-]*$",
+          "title": "Account",
+          "type": "string"
+        },
+        "audience_id": {
+          "format": "uuid",
+          "title": "Audience Id",
+          "type": "string"
+        },
+        "creative_id": {
+          "format": "uuid",
+          "title": "Creative Id",
+          "type": "string"
+        },
+        "ends_at": {
+          "format": "date-time",
+          "title": "Ends At",
+          "type": "string"
+        },
+        "source_version": {
+          "maximum": 2147483647,
+          "minimum": 1,
+          "title": "Source Version",
+          "type": "integer"
+        },
+        "starts_at": {
+          "format": "date-time",
+          "title": "Starts At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "account",
+        "source_version",
+        "audience_id",
+        "creative_id",
+        "starts_at",
+        "ends_at"
+      ],
+      "title": "DraftSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "enum": [
+        "create_draft",
+        "approve",
+        "schedule",
+        "activate",
+        "pause",
+        "archive",
+        "readback"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "campaign_id": {
+      "format": "uuid",
+      "title": "Campaign Id",
+      "type": "string"
+    },
+    "draft": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DraftSpec"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "expected_version": {
+      "maximum": 2147483647,
+      "minimum": 0,
+      "title": "Expected Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "campaign_id",
+    "action",
+    "expected_version"
+  ],
+  "title": "ProviderCommand",
+  "type": "object"
+}

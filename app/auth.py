@@ -9,6 +9,7 @@ import jwt
 from fastapi import Depends, Header, HTTPException, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
+from .identifiers import valid_tenant_id
 
 bearer = HTTPBearer(auto_error=False)
 
@@ -51,7 +52,7 @@ def _scopes(claims: dict[str, Any]) -> frozenset[str]:
 def _tenant_claim(claims: dict[str, Any]) -> str | None:
     for name in ("tenant_id", "tenant"):
         value = claims.get(name)
-        if isinstance(value, str) and value.strip():
+        if isinstance(value, str) and valid_tenant_id(value.strip()):
             return value.strip()
     return None
 
