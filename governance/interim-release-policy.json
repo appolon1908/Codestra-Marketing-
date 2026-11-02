@@ -18,6 +18,16 @@
       "context": "container-build",
       "integration_id": 15368,
       "workflow": ".github/workflows/immutable-image.yml"
+    },
+    {
+      "context": "deploy-readiness / deploy-readiness / source-ci",
+      "integration_id": 15368,
+      "workflow": ".github/workflows/codestra-deploy-readiness.yml"
+    },
+    {
+      "context": "deploy-readiness / deploy-readiness / secret-scan",
+      "integration_id": 15368,
+      "workflow": ".github/workflows/codestra-deploy-readiness.yml"
     }
   ],
   "replaces_contexts": [
